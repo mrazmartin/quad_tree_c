@@ -69,10 +69,17 @@ Rectangle* rectangle_set_up(Point *center, int half_width, int half_height){
 }
 
 bool point_in_rectangle(Rectangle *rectangle, Point* point){
-    if (point->x < rectangle->center->x - rectangle->half_width || point->x > rectangle->center->x)
+    if (point->x < rectangle->center->x - rectangle->half_width || point->x > rectangle->center->x + rectangle->half_width)
     {
-        /* code */
+        return false;
     }
+
+    if (point->y > rectangle->center->y + rectangle->half_height || point->y < rectangle->center->y - rectangle->half_height)
+    {
+        return false;
+    }
+    
+    return true;
     
 }
 
