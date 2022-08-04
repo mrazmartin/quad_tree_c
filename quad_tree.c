@@ -69,7 +69,7 @@ Rectangle* set_up_rectangle(Point *center, int half_width, int half_height){
 }
 
 QuadTree* QT_subdivide(QuadTree* parent){
-    float quarter_width = parent->boundry_rectangle->half_width / 2;
+    float quarter_width = parent->boundry_rectangle->half_width / 2;            // TODO: resolve cases of even division (a point exactly on the boundry may cause trouble)
     float quarter_height = parent->boundry_rectangle->half_height / 2;
 
     Point *nw_p = Point_new(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y + quarter_height);
@@ -99,6 +99,33 @@ bool point_in_rectangle(Rectangle *rectangle, Point* point){
     return true;
 }
 
+bool check_rectangle_intersection(Rectangle* main_rect, Rectangle* other_rect){
+    
+    //check horizontal
+    if (main_rect->center->x + main_rect->half_width > other_rect->center->x - other_rect->half_width)
+    {
+        return true;
+    }
+    
+    if (main_rect->center->x - main_rect->half_width < other_rect->center->x + other_rect->half_width)
+    {
+        return true;
+    }
+    
+    // check vertical
+
+    if (main_rect->center->y + main_rect->half_height < other_rect->center->y + other_rect->half_height)
+    {
+        return true;
+    }
+    if (main_rect->center->y - main_rect->half_height > other_rect->center->y - other_rect->half_height)
+    {
+        return true;
+    }
+    
+    return false;
+    
+}
 
 QuadTree* QT_init(Rectangle* rectangle){
     QuadTree* qt = (QuadTree*)malloc(sizeof(QuadTree));
