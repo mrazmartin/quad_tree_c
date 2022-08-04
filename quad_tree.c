@@ -36,13 +36,13 @@ typedef struct Rectangle {
 } Rectangle;
 
 typedef struct QuadTree {
-    struct QuadTree* NW;
-    struct QuadTree* NE;
-    struct QuadTree* SW;
-    struct QuadTree* SE;
+    struct QuadTree* northwest;
+    struct QuadTree* northeast;
+    struct QuadTree* southwest;
+    struct QuadTree* southeast;
 
     Point **point_array;
-    Rectangle *init_screen;
+    Rectangle *boundry_rectangle;
 
 } QuadTree;
 
@@ -68,7 +68,25 @@ Rectangle* rectangle_set_up(Point *center, int half_width, int half_height){
     return rectangle;
 }
 
+QuadTree* QT_subdivide(QuadTree* parent){
+    float quarter_width = parent->boundry_rectangle->half_width / 2;
+    float quarter_height = parent->boundry_rectangle->half_height / 2;
+
+    Point *nw_p = Point_new(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y + quarter_height);
+    parent->northwest = QuadTree_new(AABB_new(nw_p, quarter_width, quarter_height));
+    
+    Point *ne_p = Point_new(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y + quarter_height);
+    parent->northeast = QuadTree_new(AABB_new(ne_p, quarter_width, quarter_height));
+
+    Point *sw_p = Point_new(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y - quarter_height);
+    parent->southwest = QuadTree_new(AABB_new(sw_p, quarter_width, quarter_height));
+    
+    Point *se_p = Point_new(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y - quarter_height);
+    parent->southeast = QuadTree_new(AABB_new(se_p, quarter_width, quarter_height));
+}
+
 bool point_in_rectangle(Rectangle *rectangle, Point* point){
+    
     if (point->x < rectangle->center->x - rectangle->half_width || point->x > rectangle->center->x + rectangle->half_width)
     {
         return false;
@@ -78,9 +96,7 @@ bool point_in_rectangle(Rectangle *rectangle, Point* point){
     {
         return false;
     }
-    
     return true;
-    
 }
 
 void insert_point(Point* point, QuadTree* qt)
