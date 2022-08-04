@@ -23,17 +23,16 @@
 
 #define QT_LEAF_CAPACITY (2)
 
-
 typedef struct Point {
     int x;
     int y;
 } Point;
 
-typedef struct Rectangle {
+typedef struct QT_rectangle {
     Point* center;
     int half_width;
     int half_height;
-} Rectangle;
+} QT_rectangle;
 
 typedef struct QuadTree {
     struct QuadTree* northwest;
@@ -44,7 +43,7 @@ typedef struct QuadTree {
     bool subdivided;
 
     Point **point_array;
-    Rectangle *boundry_rectangle;
+    QT_rectangle *boundry_rectangle;
 
 } QuadTree;
 
@@ -56,34 +55,53 @@ Point* set_up_point(int x_coord, int y_coord){
     return point;
 } 
 
-Rectangle* set_up_rectangle(Point *center, int half_width, int half_height){
-    Rectangle* rectangle = (Rectangle*)malloc(sizeof(Rectangle));
+QT_rectangle* set_up_rectangle(Point *center, int half_width, int half_height){
+    QT_rectangle* rectangle = (QT_rectangle*)malloc(sizeof(QT_rectangle));
     rectangle->center = center;
     rectangle->half_height = half_height;
     rectangle->half_width = half_width;
     return rectangle;
 }
 
+
+QuadTree* QT_init(QT_rectangle* rectangle){
+    QuadTree* qt = (QuadTree*)malloc(sizeof(QuadTree));
+    qt->northeast = NULL;
+    qt->northwest = NULL;
+    qt->southeast = NULL;
+    qt->southwest = NULL;
+    qt->boundry_rectangle = rectangle;
+    qt->subdivided=false;
+
+    qt->point_array = (Point**)malloc(sizeof(Point*)*QT_LEAF_CAPACITY);     // maximum of points stored within a rectangle
+    
+    for (size_t i = 0; i < QT_LEAF_CAPACITY; i++)
+    {
+        qt->point_array[i]=NULL;
+    }
+    return qt;
+}
+
 QuadTree* QT_subdivide(QuadTree* parent){
     float quarter_width = parent->boundry_rectangle->half_width / 2;            // TODO: resolve cases of even division (a point exactly on the boundry may cause trouble)
     float quarter_height = parent->boundry_rectangle->half_height / 2;
 
-    Point *nw_p = Point_new(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y + quarter_height);
+    Point *nw_p = set_up_point(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y + quarter_height);
     parent->northwest = QT_init(set_up_rectangle(nw_p, quarter_width, quarter_height));
     
-    Point *ne_p = Point_new(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y + quarter_height);
+    Point *ne_p = set_up_point(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y + quarter_height);
     parent->northeast = QT_init(set_up_rectangle(ne_p, quarter_width, quarter_height));
 
-    Point *sw_p = Point_new(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y - quarter_height);
+    Point *sw_p = set_up_point(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y - quarter_height);
     parent->southwest = QT_init(set_up_rectangle(sw_p, quarter_width, quarter_height));
     
-    Point *se_p = Point_new(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y - quarter_height);
+    Point *se_p = set_up_point(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y - quarter_height);
     parent->southeast = QT_init(set_up_rectangle(se_p, quarter_width, quarter_height));
 
     parent->subdivided = true;
 }
 
-bool point_in_rectangle(Rectangle *rectangle, Point* point){
+bool point_in_rectangle(QT_rectangle *rectangle, Point* point){
     
     if (point->x < rectangle->center->x - rectangle->half_width || point->x > rectangle->center->x + rectangle->half_width)
     {
@@ -97,7 +115,7 @@ bool point_in_rectangle(Rectangle *rectangle, Point* point){
     return true;
 }
 
-bool check_rectangle_intersection(Rectangle* main_rect, Rectangle* other_rect){
+bool check_rectangle_intersection(QT_rectangle* main_rect, QT_rectangle* other_rect){
     
     //check horizontal
     if (main_rect->center->x + main_rect->half_width > other_rect->center->x - other_rect->half_width)
@@ -123,24 +141,6 @@ bool check_rectangle_intersection(Rectangle* main_rect, Rectangle* other_rect){
     
     return false;
     
-}
-
-QuadTree* QT_init(Rectangle* rectangle){
-    QuadTree* qt = (QuadTree*)malloc(sizeof(QuadTree));
-    qt->northeast = NULL;
-    qt->northwest = NULL;
-    qt->southeast = NULL;
-    qt->southwest = NULL;
-    qt->boundry_rectangle = rectangle;
-    qt->subdivided=false;
-
-    qt->point_array = (Point**)malloc(sizeof(Point*)*QT_LEAF_CAPACITY);     // maximum of points stored within a rectangle
-    
-    for (size_t i = 0; i < QT_LEAF_CAPACITY; i++)
-    {
-        qt->point_array[i]=NULL;
-    }
-    return qt;
 }
 
 size_t qt_node_point_size(QuadTree* qt){
