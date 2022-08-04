@@ -144,7 +144,12 @@ QuadTree* QT_init(Rectangle* rectangle){
     return qt;
 }
 
-void insert_point(Point* point, QuadTree* qt)
-{
 
+void QT_insert_point(Point* point, QuadTree* qt)
+{
+    if (!point_in_rectangle(qt->boundry_rectangle, point))
+    {
+        return false; // if the point is not present in the given rectangle, there is no reason to insert it there (the function serves to differentiate between the 4 sections of a qt node)
+    }
+    
 }
