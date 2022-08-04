@@ -13,3 +13,33 @@
     The code is should run cross-platform, it has been tested for Linux and Windows (with MinGW).
 */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <windows.h>
+#include <stdint.h>
+#include <io.h> // insted of <unistd.h>
+
+typedef struct Point {
+    int x;
+    int y;
+} Point;
+
+typedef struct Rectangle {
+    int center_x;
+    int center_y;
+    int width;
+    int height;
+} Rectangle;
+
+typedef struct QuadTree {
+    struct QuadTree* NW;
+    struct QuadTree* NE;
+    struct QuadTree* SW;
+    struct QuadTree* SE;
+
+    Point **point_array;
+    Rectangle *init_screen;
+    
+} QuadTree;
