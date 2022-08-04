@@ -41,6 +41,8 @@ typedef struct QuadTree {
     struct QuadTree* southwest;
     struct QuadTree* southeast;
 
+    bool subdivided;
+
     Point **point_array;
     Rectangle *boundry_rectangle;
 
@@ -83,6 +85,8 @@ QuadTree* QT_subdivide(QuadTree* parent){
     
     Point *se_p = Point_new(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y - quarter_height);
     parent->southeast = QT_init(set_up_rectangle(se_p, quarter_width, quarter_height));
+
+    parent->subdivided = true;
 }
 
 bool point_in_rectangle(Rectangle *rectangle, Point* point){
@@ -134,6 +138,7 @@ QuadTree* QT_init(Rectangle* rectangle){
     qt->southeast = NULL;
     qt->southwest = NULL;
     qt->boundry_rectangle = rectangle;
+    qt->subdivided=false;
 
     qt->point_array = (Point**)malloc(sizeof(Point*)*QT_LEAF_CAPACITY);     // maximum of points stored within a rectangle
     
@@ -157,12 +162,43 @@ size_t qt_node_point_size(QuadTree* qt){
     return point_size;
 }
 
-void QT_insert_point(Point* point, QuadTree* qt)
+bool QT_insert_point(Point* point, QuadTree* qt)
 {
+    
     if (!point_in_rectangle(qt->boundry_rectangle, point))
     {
         return false; // if the point is not present in the given rectangle, there is no reason to insert it there (the function serves to differentiate between the 4 sections of a qt node)
     }
 
+    size_t num_points = qt_node_point_size(qt);
 
+    if (num_points < QT_LEAF_CAPACITY && qt->subdivided)
+    {
+        qt->point_array[num_points] = point;
+        return true;
+    }
+    
+    if (!qt->subdivided)
+    {
+        QT_subdivide(qt);
+    }
+    
+    if (QT_insert_point(point, qt->northwest));
+    {
+        return true;
+    }
+    if (QT_insert_point(point, qt->northeast));
+    {
+        return true;
+    }
+    if (QT_insert_point(point, qt->southwest));
+    {
+        return true;
+    }
+    if (QT_insert_point(point, qt->southeast));
+    {
+        return true;
+    }
+
+    return false;   // TODO check if there is another option available -> if not: stderr
 }
