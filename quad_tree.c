@@ -60,7 +60,7 @@ Point* set_up_point(int x_coord, int y_coord){
     return point;
 } 
 
-Rectangle* rectangle_set_up(Point *center, int half_width, int half_height){
+Rectangle* set_up_rectangle(Point *center, int half_width, int half_height){
     Rectangle* rectangle = (Rectangle*)malloc(sizeof(Rectangle));
     rectangle->center = center;
     rectangle->half_height = half_height;
@@ -73,16 +73,16 @@ QuadTree* QT_subdivide(QuadTree* parent){
     float quarter_height = parent->boundry_rectangle->half_height / 2;
 
     Point *nw_p = Point_new(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y + quarter_height);
-    parent->northwest = QT_init(rectangle_set_up(nw_p, quarter_width, quarter_height));
+    parent->northwest = QT_init(set_up_rectangle(nw_p, quarter_width, quarter_height));
     
     Point *ne_p = Point_new(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y + quarter_height);
-    parent->northeast = QT_init(rectangle_set_up(ne_p, quarter_width, quarter_height));
+    parent->northeast = QT_init(set_up_rectangle(ne_p, quarter_width, quarter_height));
 
     Point *sw_p = Point_new(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y - quarter_height);
-    parent->southwest = QT_init(rectangle_set_up(sw_p, quarter_width, quarter_height));
+    parent->southwest = QT_init(set_up_rectangle(sw_p, quarter_width, quarter_height));
     
     Point *se_p = Point_new(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y - quarter_height);
-    parent->southeast = QT_init(rectangle_set_up(se_p, quarter_width, quarter_height));
+    parent->southeast = QT_init(set_up_rectangle(se_p, quarter_width, quarter_height));
 }
 
 bool point_in_rectangle(Rectangle *rectangle, Point* point){
