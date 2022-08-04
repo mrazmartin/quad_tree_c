@@ -144,6 +144,18 @@ QuadTree* QT_init(Rectangle* rectangle){
     return qt;
 }
 
+size_t qt_node_point_size(QuadTree* qt){
+    size_t point_size;
+
+    for(point_size=0; point_size<QT_LEAF_CAPACITY;point_size++){
+        if (qt->point_array[point_size]==NULL)
+        {
+            return point_size;
+        }
+    }
+
+    return point_size;
+}
 
 void QT_insert_point(Point* point, QuadTree* qt)
 {
@@ -151,5 +163,6 @@ void QT_insert_point(Point* point, QuadTree* qt)
     {
         return false; // if the point is not present in the given rectangle, there is no reason to insert it there (the function serves to differentiate between the 4 sections of a qt node)
     }
-    
+
+
 }
