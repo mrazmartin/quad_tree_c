@@ -99,6 +99,24 @@ bool point_in_rectangle(Rectangle *rectangle, Point* point){
     return true;
 }
 
+
+QuadTree* QT_init(Rectangle* rectangle){
+    QuadTree* qt = (QuadTree*)malloc(sizeof(QuadTree));
+    qt->northeast = NULL;
+    qt->northwest = NULL;
+    qt->southeast = NULL;
+    qt->southwest = NULL;
+    qt->boundry_rectangle = rectangle;
+
+    qt->point_array = (Point**)malloc(sizeof(Point*)*QT_LEAF_CAPACITY);     // maximum of points stored within a rectangle
+    
+    for (size_t i = 0; i < QT_LEAF_CAPACITY; i++)
+    {
+        qt->point_array[i]=NULL;
+    }
+    return qt;
+}
+
 void insert_point(Point* point, QuadTree* qt)
 {
 
