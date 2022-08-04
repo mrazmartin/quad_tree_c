@@ -30,8 +30,7 @@ typedef struct Point {
 } Point;
 
 typedef struct Rectangle {
-    int center_x;
-    int center_y;
+    int center;
     int half_width;
     int half_height;
 } Rectangle;
@@ -60,3 +59,16 @@ Point* set_up_point(int x_coord, int y_coord){
 
     return point;
 } 
+
+Rectangle* rectangle_set_up(Point *center, int half_width, int half_height){
+    Rectangle* rectangle = (Rectangle*)malloc(sizeof(Rectangle));
+    rectangle->center = center;
+    rectangle->half_height = half_height;
+    rectangle->half_width = half_width;
+    return rectangle;
+}
+
+void insert_point(Point point, QuadTree qt)
+{
+
+}
