@@ -30,7 +30,7 @@ typedef struct Point {
 } Point;
 
 typedef struct Rectangle {
-    int center;
+    Point* center;
     int half_width;
     int half_height;
 } Rectangle;
@@ -68,7 +68,15 @@ Rectangle* rectangle_set_up(Point *center, int half_width, int half_height){
     return rectangle;
 }
 
-void insert_point(Point point, QuadTree qt)
+bool point_in_rectangle(Rectangle *rectangle, Point* point){
+    if (point->x < rectangle->center->x - rectangle->half_width || point->x > rectangle->center->x)
+    {
+        /* code */
+    }
+    
+}
+
+void insert_point(Point* point, QuadTree* qt)
 {
 
 }
