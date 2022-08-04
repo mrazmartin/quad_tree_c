@@ -21,6 +21,9 @@
 #include <stdint.h>
 #include <io.h> // insted of <unistd.h>
 
+#define QT_LEAF_CAPACITY (2)
+
+
 typedef struct Point {
     int x;
     int y;
@@ -29,8 +32,8 @@ typedef struct Point {
 typedef struct Rectangle {
     int center_x;
     int center_y;
-    int width;
-    int height;
+    int half_width;
+    int half_height;
 } Rectangle;
 
 typedef struct QuadTree {
@@ -41,5 +44,19 @@ typedef struct QuadTree {
 
     Point **point_array;
     Rectangle *init_screen;
-    
+
 } QuadTree;
+
+int main(int argc, char const *argv[])
+{
+    
+    return 0;
+}
+
+Point* set_up_point(int x_coord, int y_coord){
+    Point *point = (Point *)malloc(sizeof(Point));
+    point->x = x_coord;
+    point->y = y_coord;
+
+    return point;
+} 
