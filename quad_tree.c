@@ -73,16 +73,16 @@ QuadTree* QT_subdivide(QuadTree* parent){
     float quarter_height = parent->boundry_rectangle->half_height / 2;
 
     Point *nw_p = Point_new(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y + quarter_height);
-    parent->northwest = QuadTree_new(AABB_new(nw_p, quarter_width, quarter_height));
+    parent->northwest = QT_init(rectangle_set_up(nw_p, quarter_width, quarter_height));
     
     Point *ne_p = Point_new(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y + quarter_height);
-    parent->northeast = QuadTree_new(AABB_new(ne_p, quarter_width, quarter_height));
+    parent->northeast = QT_init(rectangle_set_up(ne_p, quarter_width, quarter_height));
 
     Point *sw_p = Point_new(parent->boundry_rectangle->center->x - quarter_width, parent->boundry_rectangle->center->y - quarter_height);
-    parent->southwest = QuadTree_new(AABB_new(sw_p, quarter_width, quarter_height));
+    parent->southwest = QT_init(rectangle_set_up(sw_p, quarter_width, quarter_height));
     
     Point *se_p = Point_new(parent->boundry_rectangle->center->x + quarter_width, parent->boundry_rectangle->center->y - quarter_height);
-    parent->southeast = QuadTree_new(AABB_new(se_p, quarter_width, quarter_height));
+    parent->southeast = QT_init(rectangle_set_up(se_p, quarter_width, quarter_height));
 }
 
 bool point_in_rectangle(Rectangle *rectangle, Point* point){
