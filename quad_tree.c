@@ -48,12 +48,6 @@ typedef struct QuadTree {
 
 } QuadTree;
 
-int main(int argc, char const *argv[])
-{
-    
-    return 0;
-}
-
 Point* set_up_point(int x_coord, int y_coord){
     Point *point = (Point *)malloc(sizeof(Point));
     point->x = x_coord;
@@ -201,4 +195,30 @@ bool QT_insert_point(Point* point, QuadTree* qt)
     }
 
     return false;   // TODO check if there is another option available -> if not: stderr
+}
+
+Point* get_center(float width, float height){
+    Point* point = (Point*)malloc(sizeof(Point));
+    point->x = width/2;
+    point->y = height/2;
+    return point;
+}
+
+#define X 100
+#define Y 100
+
+int main(int argc, char const *argv[])
+{
+    
+    float width, height;
+    width = X;
+    height = Y;
+
+    Point* center = get_center(width, height);
+
+    printf("The init center point has coords[%f ; %f]"), center->x, center->y;
+    
+
+
+    return 0;
 }
