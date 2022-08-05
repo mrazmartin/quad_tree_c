@@ -166,7 +166,7 @@ bool QT_insert_point(Point* point, QuadTree* qt)
     
     if (!point_in_rectangle(qt->boundry_rectangle, point))
     {
-
+        printf("FUJ, sem nepatrim\n");
         return false; // if the point is not present in the given rectangle, there is no reason to insert it there (the function serves to differentiate between the 4 sections of a qt node)
     }
 
@@ -189,25 +189,25 @@ bool QT_insert_point(Point* point, QuadTree* qt)
     
     if (QT_insert_point(point, qt->northwest));
     {
-        printf("Inserted NW ");
+        printf("Inserted --NW-- ");
         print_point(point);
         return true;
     }
     if (QT_insert_point(point, qt->northeast));
     {
-        printf("Inserted NE ");
+        printf("Inserted --NE-- ");
         print_point(point);
         return true;
     }
     if (QT_insert_point(point, qt->southwest));
     {
-        printf("Inserted SW ");
+        printf("Inserted --SW-- ");
         print_point(point);
         return true;
     }
     if (QT_insert_point(point, qt->southeast));
     {
-        printf("Inserted SE ");
+        printf("Inserted --SE-- ");
         print_point(point);
         return true;
     }
@@ -240,21 +240,22 @@ int main(int argc, char const *argv[])
     QT_rectangle* rectangle = set_up_rectangle(center, width/2, height/2);
 
 
-    int upper = 200, lower = 0;
-    srand(time(0));
+    int upper = 10, lower = 0;
+    //srand(time(0));
 
     QuadTree* qt = QT_init(rectangle);
 
     for (size_t i = 0; i < 10; i++)
     {
-
         int x = (rand() % (upper - lower + 1)) + lower;
         int y = (rand() % (upper - lower + 1)) + lower;
 
         Point* point = set_up_point(x,y);
+        printf("\n");
         print_point(point);
         if(!QT_insert_point(point, qt)){
             printf("\n%sFAILED%s TO INSERT POINT\n\n", "\x1B[31m", "\x1b[0m");
         }
     }
+    printf("\n%sCODE END%s", "\x1B[36m", "\x1b[0m");
 }
