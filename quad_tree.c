@@ -20,6 +20,7 @@
 #include <windows.h>
 #include <stdint.h>
 #include <io.h> // insted of <unistd.h>
+#include <time.h>
 
 #define QT_LEAF_CAPACITY (2)
 
@@ -156,11 +157,16 @@ size_t qt_node_point_size(QuadTree* qt){
     return point_size;
 }
 
+void print_point(Point* point){
+    printf("Point: [%f ; %f]\n", point->x, point->y);
+}
+
 bool QT_insert_point(Point* point, QuadTree* qt)
 {
     
     if (!point_in_rectangle(qt->boundry_rectangle, point))
     {
+
         return false; // if the point is not present in the given rectangle, there is no reason to insert it there (the function serves to differentiate between the 4 sections of a qt node)
     }
 
@@ -169,6 +175,9 @@ bool QT_insert_point(Point* point, QuadTree* qt)
     if (num_points < QT_LEAF_CAPACITY && qt->subdivided)
     {
         qt->point_array[num_points] = point;
+        printf("Inserted ");
+        print_point(point);
+        printf("\n");
         return true;
     }
     
@@ -179,18 +188,26 @@ bool QT_insert_point(Point* point, QuadTree* qt)
     
     if (QT_insert_point(point, qt->northwest));
     {
+        printf("Inserted NW ");
+        print_point(point);
         return true;
     }
     if (QT_insert_point(point, qt->northeast));
     {
+        printf("Inserted NE ");
+        print_point(point);
         return true;
     }
     if (QT_insert_point(point, qt->southwest));
     {
+        printf("Inserted SW ");
+        print_point(point);
         return true;
     }
     if (QT_insert_point(point, qt->southeast));
     {
+        printf("Inserted SE ");
+        print_point(point);
         return true;
     }
 
@@ -206,8 +223,8 @@ Point* get_center(float width, float height){       // somewhat duplicate to the
     return point;
 }
 
-#define X 100
-#define Y 100
+#define X 200
+#define Y 200
 
 int main(int argc, char const *argv[])
 {
@@ -217,7 +234,26 @@ int main(int argc, char const *argv[])
 
     Point* center = get_center(width, height);
 
-    printf("The 'point' has coords: [%f ; %f]\n", center->x, center->y);
+    printf("The 'point' has coords: [%f ; %f]\n\n", center->x, center->y);
 
     QT_rectangle* rectangle = set_up_rectangle(center, width/2, height/2);
+
+
+    int upper = 200, lower = 0;
+    srand(time(0));
+
+    QuadTree* qt = QT_init(rectangle);
+
+    for (size_t i = 0; i < 10; i++)
+    {
+
+        int x = (rand() % (upper - lower + 1)) + lower;
+        int y = (rand() % (upper - lower + 1)) + lower;
+
+        Point* point = set_up_point(x,y);
+        print_point(point);
+        if(!QT_insert_point(point, qt)){
+            printf("\n%sFAILED%s TO INSERT POINT\n\n", "\x1B[31m", "\x1b[0m");
+        }
+    }
 }
