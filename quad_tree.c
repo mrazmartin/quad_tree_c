@@ -20,6 +20,8 @@
 #include <windows.h>
 #include <stdint.h>
 #include <io.h> // insted of <unistd.h>
+#include "plot_lib/pbPlots.h"
+#include "plot_lib/supportLib.h"
 
 #define QT_LEAF_CAPACITY (2)
 
