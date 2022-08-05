@@ -7,7 +7,7 @@
     Since I am only redicovering coding in C after a long break, the code is (and will) not
     be optimal. Feel free to pull request via  "https://github.com/mrazmartin/quad_tree_c".
 
-    Outside of the mentioned ispiration tutorial is the code written by Martin Mráz.
+    Outside of the mentioned ispiration tutorial is the code written by Martin Mráz
     https://github.com/mrazmartin
 
     The code should run cross-platform, it has been tested for Linux and Windows (with MinGW).
@@ -63,7 +63,7 @@ QT_rectangle* set_up_rectangle(Point *center, float half_width, float half_heigh
     return rectangle;
 }
 
-
+ 
 QuadTree* QT_init(QT_rectangle* rectangle){
     QuadTree* qt = (QuadTree*)malloc(sizeof(QuadTree));
     qt->northeast = NULL;
