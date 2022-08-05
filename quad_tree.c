@@ -10,7 +10,7 @@
     Outside of the mentioned ispiration tutorial is the code written by Martin Mráz.
     https://github.com/mrazmartin
 
-    The code is should run cross-platform, it has been tested for Linux and Windows (with MinGW).
+    The code should run cross-platform, it has been tested for Linux and Windows (with MinGW).
 */
 
 #include <stdio.h>
@@ -24,14 +24,14 @@
 #define QT_LEAF_CAPACITY (2)
 
 typedef struct Point {
-    int x;
-    int y;
+    float x;
+    float y;
 } Point;
 
 typedef struct QT_rectangle {
     Point* center;
-    int half_width;
-    int half_height;
+    float half_width;
+    float half_height;
 } QT_rectangle;
 
 typedef struct QuadTree {
@@ -47,7 +47,7 @@ typedef struct QuadTree {
 
 } QuadTree;
 
-Point* set_up_point(int x_coord, int y_coord){
+Point* set_up_point(float x_coord, float y_coord){
     Point *point = (Point *)malloc(sizeof(Point));
     point->x = x_coord;
     point->y = y_coord;
@@ -55,7 +55,7 @@ Point* set_up_point(int x_coord, int y_coord){
     return point;
 } 
 
-QT_rectangle* set_up_rectangle(Point *center, int half_width, int half_height){
+QT_rectangle* set_up_rectangle(Point *center, float half_width, float half_height){
     QT_rectangle* rectangle = (QT_rectangle*)malloc(sizeof(QT_rectangle));
     rectangle->center = center;
     rectangle->half_height = half_height;
@@ -198,9 +198,11 @@ bool QT_insert_point(Point* point, QuadTree* qt)
 }
 
 Point* get_center(float width, float height){
+
     Point* point = (Point*)malloc(sizeof(Point));
     point->x = width/2;
     point->y = height/2;
+    
     return point;
 }
 
@@ -209,16 +211,12 @@ Point* get_center(float width, float height){
 
 int main(int argc, char const *argv[])
 {
-    
     float width, height;
     width = X;
     height = Y;
 
     Point* center = get_center(width, height);
 
-    printf("The init center point has coords[%f ; %f]"), center->x, center->y;
-    
+    printf("The 'point' has coords [%f ; %f]\n", center->x, center->y);
 
-
-    return 0;
 }
