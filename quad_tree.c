@@ -197,7 +197,7 @@ bool QT_insert_point(Point* point, QuadTree* qt)
     return false;   // TODO check if there is another option available -> if not: stderr
 }
 
-Point* get_center(float width, float height){
+Point* get_center(float width, float height){       // somewhat duplicate to the set_up_point function
 
     Point* point = (Point*)malloc(sizeof(Point));
     point->x = width/2;
@@ -217,6 +217,7 @@ int main(int argc, char const *argv[])
 
     Point* center = get_center(width, height);
 
-    printf("The 'point' has coords [%f ; %f]\n", center->x, center->y);
+    printf("The 'point' has coords: [%f ; %f]\n", center->x, center->y);
 
+    QT_rectangle* rectangle = set_up_rectangle(center, width/2, height/2);
 }
