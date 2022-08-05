@@ -183,6 +183,7 @@ bool QT_insert_point(Point* point, QuadTree* qt)
     
     if (!qt->subdivided)
     {
+        printf("%sDIVIDING%s tree branch\n", "\x1B[33m", "\x1B[0m");
         QT_subdivide(qt);
     }
     
