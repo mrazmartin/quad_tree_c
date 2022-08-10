@@ -103,18 +103,6 @@ QuadTree* QT_subdivide(QuadTree* parent){
 }
 
 
-Point** search_QT(QuadTree* qt_root, QT_rectangle* range){
-
-    Point** out;
-    out = (Point**)malloc( QT_LEAF_CAPACITY * sizeof(Point*));
-    for (size_t i = 0; i < QT_LEAF_CAPACITY; i++)
-    {
-        out[i]= NULL;
-    }
-    
-
-    return out;
-}
 
 bool point_in_rectangle(QT_rectangle *rectangle, Point* point){
     
@@ -236,6 +224,42 @@ Point* get_center(float width, float height){       // somewhat duplicate to the
     point->y = height/2;
     
     return point;
+}
+
+
+
+Point** search_QT(QuadTree* qt_root, QT_rectangle* range){
+
+    Point** out;
+    out = (Point**)malloc( QT_LEAF_CAPACITY * sizeof(Point*));
+    for (size_t i = 0; i < QT_LEAF_CAPACITY; i++)
+    {
+        out[i]= NULL;
+    }
+
+    if (!check_rectangle_intersection(qt_root->boundry_rectangle, range))
+    {
+        return out;     //  in this case the searched for range is not within this QuadTree -> return out full of NULLs
+    }
+    
+    size_t num_points = qt_node_point_size(qt_root->point_array);
+    size_t out_index = 0;
+    for (size_t i = 0; i < num_points; i++)
+    {
+        if (point_in_rectangle(range, qt_root->point_array[i]))
+        {
+            out[out_index++] = qt_root->point_array[i];
+        }
+        
+    }
+    
+    if (qt_root)
+    {
+        return;
+    }
+    
+
+    return out;
 }
 
 #define X 256
