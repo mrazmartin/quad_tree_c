@@ -102,6 +102,20 @@ QuadTree* QT_subdivide(QuadTree* parent){
     parent->subdivided = true;
 }
 
+
+Point** search_QT(QuadTree* qt_root, QT_rectangle* range){
+
+    Point** out;
+    out = (Point**)malloc( QT_LEAF_CAPACITY * sizeof(Point*));
+    for (size_t i = 0; i < QT_LEAF_CAPACITY; i++)
+    {
+        out[i]= NULL;
+    }
+    
+
+    return out;
+}
+
 bool point_in_rectangle(QT_rectangle *rectangle, Point* point){
     
     if (point->x < rectangle->center->x - rectangle->half_width || point->x > rectangle->center->x + rectangle->half_width)
@@ -224,8 +238,8 @@ Point* get_center(float width, float height){       // somewhat duplicate to the
     return point;
 }
 
-#define X 200
-#define Y 200
+#define X 256
+#define Y 256
 
 int main(int argc, char const *argv[])
 {
@@ -235,10 +249,9 @@ int main(int argc, char const *argv[])
 
     Point* center = get_center(width, height);
 
-    printf("The 'point' has coords: [%f ; %f]\n\n", center->x, center->y);
+    printf("The 'init center point' has coords: [%f ; %f]\n\n", center->x, center->y);
 
     QT_rectangle* rectangle = set_up_rectangle(center, width/2, height/2);
-
 
     int upper = 10, lower = 0;
     //srand(time(0));
