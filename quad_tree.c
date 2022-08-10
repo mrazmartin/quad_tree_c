@@ -266,9 +266,29 @@ Point** search_QT(QuadTree* qt_root, QT_rectangle* range){
         out[out_index++] = tmp_nw[point_index];
     }
     
-
-
+    point_index = 0;
+    Point** tmp_ne = search_QT(qt_root->northeast, range);
+    while (tmp_ne[point_index] != NULL && point_index < QT_LEAF_CAPACITY )
+    {
+        out[out_index++] = tmp_ne[point_index];
+    }
     return out;
+
+    point_index = 0;
+    Point** tmp_sw = search_QT(qt_root->southwest, range);
+    while (tmp_sw[point_index] != NULL && point_index < QT_LEAF_CAPACITY )
+    {
+        out[out_index++] = tmp_sw[point_index];
+    }
+
+    point_index = 0;
+    Point** tmp_se = search_QT(qt_root->southeast, range);
+    while (tmp_se[point_index] != NULL && point_index < QT_LEAF_CAPACITY )
+    {
+        out[out_index++] = tmp_se[point_index];
+    }
+
+    return out;         
 }
 
 #define X 256
