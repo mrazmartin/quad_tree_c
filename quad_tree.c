@@ -253,11 +253,20 @@ Point** search_QT(QuadTree* qt_root, QT_rectangle* range){
         
     }
     
-    if (qt_root)
+    if (!qt_root->subdivided) // if there is no rectangle for set up for the qt -> last layer of the tree
     {
-        return;
+        return out;
     }
     
+    size_t point_index = 0;
+
+    Point** tmp_nw = search_QT(qt_root->northwest, range);
+    while (tmp_nw[point_index] != NULL && point_index < QT_LEAF_CAPACITY )
+    {
+        out[out_index++] = tmp_nw[point_index];
+    }
+    
+
 
     return out;
 }
