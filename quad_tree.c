@@ -43,13 +43,13 @@ typedef struct QuadTree {
 
     bool subdivided;
 
-    Point **point_array;
-    QT_rectangle *boundry_rectangle;
+    Point** point_array;
+    QT_rectangle* boundry_rectangle;
 
 } QuadTree;
 
 Point* set_up_point(float x_coord, float y_coord){
-    Point *point = (Point *)malloc(sizeof(Point));
+    Point* point = (Point *)malloc(sizeof(Point));
     point->x = x_coord;
     point->y = y_coord;
 
@@ -242,7 +242,7 @@ Point** search_QT(QuadTree* qt_root, QT_rectangle* range){
         return out;     //  in this case the searched for range is not within this QuadTree -> return out full of NULLs
     }
     
-    size_t num_points = qt_node_point_size(qt_root->point_array);
+    size_t num_points = qt_node_point_size(qt_root);
     size_t out_index = 0;
     for (size_t i = 0; i < num_points; i++)
     {
