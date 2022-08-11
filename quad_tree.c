@@ -22,7 +22,7 @@
 #include <io.h> // insted of <unistd.h>
 #include <time.h>
 
-#define QT_LEAF_CAPACITY (4)
+#define QT_LEAF_CAPACITY (2)
 
 typedef struct Point {
     float x;
@@ -343,6 +343,15 @@ int main(int argc, char const *argv[])
     }else if (true)
     {
         Point** points = generate_test();
+        for (size_t i = 0; i < 5; i++)
+        {
+            if(!QT_insert_point(points[i], qt)){
+                printf("\n%sOUT OF BOUNDRY%s -point was not inserted\n\n", "\x1B[31m", "\x1b[0m");
+            }else{
+                printf("%spoint inserted OK%s\n - - \n", "\x1B[30m", "\x1b[0m");
+            }
+        }
+        
 
     }else{
         
