@@ -191,25 +191,25 @@ bool QT_insert_point(Point* point, QuadTree* qt)
     
     if (QT_insert_point(point, qt->northwest));
     {
-        printf("Inserted --NW-- ");
+        printf("\n%sInserted --NW-- %s", "\x1B[38m", "\x1b[0m");
         print_point(point);
         return true;
     }
     if (QT_insert_point(point, qt->northeast));
     {
-        printf("Inserted --NE-- ");
+        printf("\n%sInserted --NE-- %s", "\x1B[38m", "\x1b[0m");
         print_point(point);
         return true;
     }
     if (QT_insert_point(point, qt->southwest));
     {
-        printf("Inserted --SW-- ");
+        printf("\n%sInserted --SW-- %s", "\x1B[38m", "\x1b[0m");
         print_point(point);
         return true;
     }
     if (QT_insert_point(point, qt->southeast));
     {
-        printf("Inserted --SE-- ");
+        printf("\n%sInserted --SE-- %s", "\x1B[38m", "\x1b[0m");
         print_point(point);
         return true;
     }
@@ -291,6 +291,7 @@ Point** search_QT(QuadTree* qt_root, QT_rectangle* range){
     return out;         
 }
 
+
 Point** generate_test(){
 
     Point** points = (Point**)malloc(sizeof(Point*)*5);
@@ -342,7 +343,7 @@ int main(int argc, char const *argv[])
     }else if (true)
     {
         Point** points = generate_test();
-        
+
     }else{
         
     }
