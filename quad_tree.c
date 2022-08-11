@@ -22,7 +22,7 @@
 #include <io.h> // insted of <unistd.h>
 #include <time.h>
 
-#define QT_LEAF_CAPACITY (2)
+#define QT_LEAF_CAPACITY (4)
 
 typedef struct Point {
     float x;
@@ -291,6 +291,21 @@ Point** search_QT(QuadTree* qt_root, QT_rectangle* range){
     return out;         
 }
 
+Point** generate_test(){
+
+    Point** points = (Point**)malloc(sizeof(Point*)*5);
+
+    Point* tmp_point;
+
+    for (size_t i = 0; i < 5; i++)
+    {
+        points[i] = set_up_point(41*i, 41*i);
+    }
+
+    return points;
+}
+
+
 #define X 256
 #define Y 256
 
@@ -311,17 +326,25 @@ int main(int argc, char const *argv[])
 
     QuadTree* qt = QT_init(rectangle);
 
-    for (size_t i = 0; i < 10; i++)
-    {
-        int x = (rand() % (upper - lower + 1)) + lower;
-        int y = (rand() % (upper - lower + 1)) + lower;
+    if(false){
+        for (size_t i = 0; i < 10; i++)
+        {
+            int x = (rand() % (upper - lower + 1)) + lower;
+            int y = (rand() % (upper - lower + 1)) + lower;
 
-        Point* point = set_up_point(x,y);
-        printf("\n");
-        print_point(point);
-        if(!QT_insert_point(point, qt)){
-            printf("\n%sFAILED%s TO INSERT POINT\n\n", "\x1B[31m", "\x1b[0m");
+            Point* point = set_up_point(x,y);
+            printf("\n");
+            print_point(point);
+            if(!QT_insert_point(point, qt)){
+                printf("\n%sFAILED%s TO INSERT POINT\n\n", "\x1B[31m", "\x1b[0m");
+            }
         }
+    }else if (true)
+    {
+        Point** points = generate_test();
+        
+    }else{
+        
     }
     printf("\n%sCODE END%s", "\x1B[36m", "\x1b[0m");
 }
