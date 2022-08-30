@@ -115,6 +115,8 @@ bool point_in_rectangle(QT_rectangle *rectangle, Point* point){
     {
         return false;
     }
+
+    printf("rectangle: [%f %f] \t point: [%d %d]\n", rectangle->center->x, rectangle->center->y, point->x, point->y);
     return true;
 }
 
@@ -168,7 +170,7 @@ bool QT_insert_point(Point* point, QuadTree* qt)
     
     if (!point_in_rectangle(qt->boundry_rectangle, point))
     {
-        printf("FUJ, sem nepatrim\n");
+        //printf("FUJ, sem nepatrim\n");
         return false; // if the point is not present in the given rectangle, there is no reason to insert it there (the function serves to differentiate between the 4 sections of a qt node)
     }
 
@@ -189,30 +191,49 @@ bool QT_insert_point(Point* point, QuadTree* qt)
         QT_subdivide(qt);
     }
     
-    if (QT_insert_point(point, qt->northwest));
+    if (QT_insert_point(point, qt->northwest))
     {
         printf("\n%sInserted --NW-- %s", "\x1B[38m", "\x1b[0m");
         print_point(point);
         return true;
+    }else
+    {
+        printf("\n%s--not NW-- %s\n", "\x1B[31m", "\x1b[0m");
     }
-    if (QT_insert_point(point, qt->northeast));
+    
+    
+    if (QT_insert_point(point, qt->northeast))
     {
         printf("\n%sInserted --NE-- %s", "\x1B[38m", "\x1b[0m");
         print_point(point);
         return true;
+    }else
+    {
+        printf("\n%s--not NE-- %s\n", "\x1B[31m", "\x1b[0m");
     }
-    if (QT_insert_point(point, qt->southwest));
+    
+
+    if (QT_insert_point(point, qt->southwest))
     {
         printf("\n%sInserted --SW-- %s", "\x1B[38m", "\x1b[0m");
         print_point(point);
         return true;
+    }else
+    {
+        printf("\n%s--not SW-- %s\n", "\x1B[31m", "\x1b[0m");
     }
-    if (QT_insert_point(point, qt->southeast));
+    
+
+    if (QT_insert_point(point, qt->southeast))
     {
         printf("\n%sInserted --SE-- %s", "\x1B[38m", "\x1b[0m");
         print_point(point);
         return true;
+    }else
+    {
+        printf("\n%s--not SE-- %s\n", "\x1B[31m", "\x1b[0m");
     }
+    
 
     return false;   // TODO check if there is another option available -> if not: stderr
 }
